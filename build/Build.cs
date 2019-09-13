@@ -8,9 +8,10 @@ using System.Linq;
 using System.Text;
 using Nuke.Common;
 using Nuke.Common.CI;
-using Nuke.Common.CI.TeamCity;
+using Nuke.Common.CI.GitHubActions;
 using Nuke.Common.Execution;
 using Nuke.Common.Git;
+using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
@@ -20,6 +21,9 @@ using Nuke.Common.Tools.Slack;
 using Nuke.Common.Utilities;
 using Nuke.Common.Utilities.Collections;
 using static Nuke.Common.ChangeLog.ChangelogTasks;
+using static Nuke.Common.CI.GitHubActions.GitHubActionsTrigger;
+using static Nuke.Common.CI.GitHubActions.GitHubActionsVirtualEnvironments;
+using static Nuke.Common.CI.TeamCity.TeamCityAgentPlatform;
 using static Nuke.Common.ControlFlow;
 using static Nuke.Common.Gitter.GitterTasks;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
@@ -35,7 +39,7 @@ using static Nuke.Common.Tools.Slack.SlackTasks;
 [DotNetVerbosityMapping]
 [UnsetVisualStudioEnvironmentVariables]
 [CustomTeamCity(
-    TeamCityAgentPlatform.Windows,
+    Windows,
     AutoGenerate = true,
     DefaultBranch = "develop",
     VcsTriggeredTargets = new[] { nameof(Pack), nameof(Test) },
@@ -43,6 +47,16 @@ using static Nuke.Common.Tools.Slack.SlackTasks;
     ManuallyTriggeredTargets = new[] { nameof(Publish) },
     NonEntryTargets = new[] { nameof(Restore) },
     ExcludedTargets = new[] { nameof(Clean) })]
+[GitHubActions(
+    AutoGenerate = true,
+    RunsOn = new[] { UbuntuLatest, MacOsLatest, WindowsLatest },
+    OnPush = new[] { Push, PullRequest },
+    OnPushBranches = new[] { "develop" },
+    OnPushTags = new[] { "v1" },
+    OnPushIncludePaths = new[] { "" },
+    OnPushExcludePaths = new[] { "" },
+    OnCronSchedule = "*/15 * * * *"
+)]
 partial class Build : NukeBuild
 {
     /// Support plugins are available for:

@@ -36,6 +36,7 @@
     <None Include="..\.nuke" />
     <None Include="..\global.json" Condition="Exists('..\global.json')" />
     <None Include="..\nuget.config" Condition="Exists('..\nuget.config')" />
+    <None Include="..\.github\workflows\*.yml"/>
     <None Include="..\.teamcity\settings.kts" Condition="Exists('..\.teamcity\settings.kts')"/>
     <None Include="..\azure-pipelines.yml" Condition="Exists('..\azure-pipelines.yml')" />
     <None Include="..\Jenkinsfile" Condition="Exists('..\Jenkinsfile')" />

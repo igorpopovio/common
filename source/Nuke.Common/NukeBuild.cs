@@ -9,6 +9,7 @@ using System.Linq.Expressions;
 using JetBrains.Annotations;
 using Nuke.Common.CI.AzureDevOps;
 using Nuke.Common.CI.Bitrise;
+using Nuke.Common.CI.GitHubActions;
 using Nuke.Common.CI.TeamCity;
 using Nuke.Common.CI.TravisCI;
 using Nuke.Common.Execution;
@@ -104,6 +105,9 @@ namespace Nuke.Common
                         break;
                     case HostType.AzureDevOps:
                         innerOutputSink = new AzureDevOpsOutputSink(new AzureDevOps());
+                        break;
+                    case HostType.GitHubActions:
+                        innerOutputSink = new GitHubActionsOutputSink(new GitHubActions());
                         break;
                     default:
                         innerOutputSink = ConsoleOutputSink.Default;

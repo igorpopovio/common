@@ -20,7 +20,7 @@ namespace Nuke.Common.CI
         {
             if (!EnvironmentInfo.GetParameter<bool>(ConfigurationParameterName))
             {
-                if (AutoGenerate)
+                if (NukeBuild.IsLocalBuild && AutoGenerate)
                 {
                     var assembly = Assembly.GetEntryAssembly().NotNull("assembly != null");
                     ProcessTasks.StartProcess(
